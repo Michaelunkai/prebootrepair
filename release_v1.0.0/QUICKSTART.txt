@@ -1,0 +1,51 @@
+===============================================
+  PreBootRepair v1.0.0 - Quick Start Guide
+===============================================
+
+WHAT IS THIS?
+-------------
+PreBootRepair schedules disk repairs that run BEFORE Windows boots,
+similar to how CHKDSK runs at startup when Windows detects issues.
+
+HOW TO USE
+----------
+1. Right-click PreBootRepair.exe -> Run as Administrator
+2. Select your drive (usually C:)
+3. Choose a repair mode:
+   - Basic: Quick scan using dirty bit
+   - Standard: Full CHKDSK /R (recommended)
+   - Advanced: CHKDSK + SFC + DISM (most thorough)
+4. Click "Schedule Repair"
+5. Reboot when ready
+
+KEYBOARD SHORTCUTS
+------------------
+F5        - Analyze selected drive
+Ctrl+S    - Schedule repair
+Ctrl+R    - Refresh drive list
+Ctrl+L    - Open logs folder
+F1        - About/Help
+
+COMMAND LINE
+------------
+PreBootRepair.exe                    - Open GUI
+PreBootRepair.exe /schedule C:       - Schedule repair silently
+PreBootRepair.exe /schedule /reboot  - Schedule and reboot now
+PreBootRepair.exe /help              - Show all options
+
+SAFETY NOTES
+------------
+* This tool uses Windows native repair mechanisms (CHKDSK, SFC, DISM)
+* Repairs are non-destructive and safe
+* You can cancel a scheduled repair before rebooting
+* All operations are logged to C:\ProgramData\PreBootRepair\Logs
+
+REQUIREMENTS
+------------
+* Windows 10 or Windows 11
+* Administrator privileges
+* No .NET installation needed (self-contained)
+
+===============================================
+  License: MIT | © 2024 OpenClaw
+===============================================

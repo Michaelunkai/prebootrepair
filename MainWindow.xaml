@@ -1,0 +1,255 @@
+<Window x:Class="PreBootRepair.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="PreBootRepair - Disk Repair Utility" 
+        Height="660" Width="720"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize"
+        Background="#1E1E1E"
+        KeyDown="Window_KeyDown">
+    
+    <Window.Resources>
+        <!-- Dark Theme Colors -->
+        <SolidColorBrush x:Key="BackgroundBrush" Color="#1E1E1E"/>
+        <SolidColorBrush x:Key="CardBrush" Color="#2D2D2D"/>
+        <SolidColorBrush x:Key="BorderBrush" Color="#3D3D3D"/>
+        <SolidColorBrush x:Key="TextBrush" Color="#E0E0E0"/>
+        <SolidColorBrush x:Key="SecondaryTextBrush" Color="#A0A0A0"/>
+        <SolidColorBrush x:Key="AccentBrush" Color="#0078D4"/>
+        <SolidColorBrush x:Key="SuccessBrush" Color="#4CAF50"/>
+        <SolidColorBrush x:Key="WarningBrush" Color="#FF9800"/>
+        <SolidColorBrush x:Key="ErrorBrush" Color="#F44336"/>
+        
+        <!-- Button Style -->
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Background" Value="#0078D4"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="16,10"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="4" 
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1084D8"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#404040"/>
+                    <Setter Property="Foreground" Value="#808080"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <!-- Secondary Button Style -->
+        <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource ModernButton}">
+            <Setter Property="Background" Value="#404040"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#505050"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <!-- Danger Button Style -->
+        <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource ModernButton}">
+            <Setter Property="Background" Value="#D32F2F"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E53935"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <!-- Card Style -->
+        <Style x:Key="CardBorder" TargetType="Border">
+            <Setter Property="Background" Value="#2D2D2D"/>
+            <Setter Property="BorderBrush" Value="#3D3D3D"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+        </Style>
+        
+        <!-- Menu Style -->
+        <Style TargetType="Menu">
+            <Setter Property="Background" Value="#252525"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+        </Style>
+        
+        <Style TargetType="MenuItem">
+            <Setter Property="Background" Value="#252525"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="Padding" Value="8,4"/>
+        </Style>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Menu Bar -->
+        <Menu Grid.Row="0" Background="#252525" Foreground="#E0E0E0" Padding="4">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Exit" Click="ExitMenuItem_Click"/>
+            </MenuItem>
+            <MenuItem Header="_Tools">
+                <MenuItem Header="_View Logs Folder" Click="ViewLogsMenuItem_Click"/>
+                <MenuItem Header="_Clear Log Window" Click="ClearLogMenuItem_Click"/>
+                <Separator/>
+                <MenuItem Header="_Refresh Drives" Click="RefreshDrivesMenuItem_Click"/>
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About PreBootRepair" Click="AboutMenuItem_Click"/>
+                <MenuItem Header="_Command Line Help" Click="CommandLineHelpMenuItem_Click"/>
+            </MenuItem>
+        </Menu>
+        
+        <!-- Main Content -->
+        <Grid Grid.Row="1" Margin="20,10,20,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Header -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,16">
+                <TextBlock Text="🛡️ PreBootRepair" 
+                           FontSize="28" FontWeight="Bold" 
+                           Foreground="{StaticResource TextBrush}"
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="Schedule disk repairs to run before Windows boots" 
+                           FontSize="13" 
+                           Foreground="{StaticResource SecondaryTextBrush}"
+                           HorizontalAlignment="Center" Margin="0,4,0,0"/>
+            </StackPanel>
+            
+            <!-- Drive Selection -->
+            <Border Grid.Row="1" Style="{StaticResource CardBorder}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <TextBlock Text="Target Drive" Foreground="{StaticResource SecondaryTextBrush}" 
+                               FontSize="12" Margin="0,0,0,6"/>
+                    <ComboBox x:Name="DriveComboBox" Grid.Row="1" 
+                              SelectionChanged="DriveComboBox_SelectionChanged"/>
+                    
+                    <TextBlock Text="Repair Mode" Foreground="{StaticResource SecondaryTextBrush}" 
+                               FontSize="12" Grid.Column="1" Margin="16,0,0,6"/>
+                    <ComboBox x:Name="ModeComboBox" Grid.Row="1" Grid.Column="1" Margin="16,0,0,0">
+                        <ComboBoxItem Content="Basic (Quick scan)" IsSelected="True"/>
+                        <ComboBoxItem Content="Standard (Full CHKDSK)"/>
+                        <ComboBoxItem Content="Advanced (CHKDSK + SFC/DISM)"/>
+                    </ComboBox>
+                </Grid>
+            </Border>
+            
+            <!-- Drive Status -->
+            <Border Grid.Row="2" Style="{StaticResource CardBorder}">
+                <StackPanel>
+                    <TextBlock Text="Drive Status" Foreground="{StaticResource SecondaryTextBrush}" 
+                               FontSize="12" Margin="0,0,0,8"/>
+                    <TextBlock x:Name="StatusText" 
+                               Text="Select a drive to view status..." 
+                               Foreground="{StaticResource TextBrush}"
+                               FontSize="13" TextWrapping="Wrap"/>
+                    <ProgressBar x:Name="ProgressBar" Height="4" Margin="0,12,0,0" 
+                                 Background="#3D3D3D" Foreground="#0078D4"
+                                 Visibility="Collapsed"/>
+                </StackPanel>
+            </Border>
+            
+            <!-- Action Buttons -->
+            <Border Grid.Row="3" Style="{StaticResource CardBorder}">
+                <WrapPanel HorizontalAlignment="Center">
+                    <Button x:Name="AnalyzeButton" Content="🔍 Analyze Drive" 
+                            Style="{StaticResource SecondaryButton}"
+                            Click="AnalyzeButton_Click" Margin="0,0,8,0"
+                            ToolTip="Check drive health, SMART status, and dirty bit (F5)"/>
+                    <Button x:Name="ScheduleButton" Content="📅 Schedule Repair" 
+                            Style="{StaticResource ModernButton}"
+                            Click="ScheduleButton_Click" Margin="0,0,8,0"
+                            ToolTip="Schedule disk repair to run on next reboot (Ctrl+S)"/>
+                    <Button x:Name="CancelButton" Content="❌ Cancel" 
+                            Style="{StaticResource SecondaryButton}"
+                            Click="CancelButton_Click" Margin="0,0,8,0" IsEnabled="False"
+                            ToolTip="Cancel the scheduled repair"/>
+                    <Button x:Name="RebootButton" Content="🔄 Reboot Now" 
+                            Style="{StaticResource DangerButton}"
+                            Click="RebootButton_Click" IsEnabled="False"
+                            ToolTip="Restart the computer to begin disk repair"/>
+                </WrapPanel>
+            </Border>
+            
+            <!-- Schedule Status Banner -->
+            <Border x:Name="ScheduleBanner" Grid.Row="4" 
+                    Background="#1B3A1B" BorderBrush="#2E7D32" BorderThickness="1"
+                    CornerRadius="8" Padding="16" Margin="0,0,0,12" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="✅" FontSize="18" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <StackPanel>
+                        <TextBlock x:Name="ScheduleStatusText" Text="Repair scheduled" 
+                                   Foreground="#81C784" FontWeight="SemiBold"/>
+                        <TextBlock x:Name="ScheduleDetailsText" Text="" 
+                                   Foreground="#A5D6A7" FontSize="12"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            
+            <!-- Activity Log -->
+            <Border Grid.Row="5" Style="{StaticResource CardBorder}" Margin="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <TextBlock Text="Activity Log" Foreground="{StaticResource SecondaryTextBrush}" 
+                               FontSize="12" Margin="0,0,0,8"/>
+                    <ListBox x:Name="LogListBox" Grid.Row="1" 
+                             Background="#252525" BorderBrush="#3D3D3D"
+                             Foreground="{StaticResource TextBrush}"
+                             FontFamily="Consolas" FontSize="12"/>
+                </Grid>
+            </Border>
+        </Grid>
+        
+        <!-- Status Bar -->
+        <Border Grid.Row="2" Background="#252525" Padding="10,6">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock x:Name="StatusBarText" Text="Ready" 
+                           Foreground="#A0A0A0" FontSize="11"/>
+                <TextBlock x:Name="VersionText" Grid.Column="1" 
+                           Text="v1.0.0" Foreground="#606060" FontSize="11"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

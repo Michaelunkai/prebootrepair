@@ -1,0 +1,50 @@
+<Application x:Class="PreBootRepair.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <!-- Global Dark Theme -->
+            <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="#1E1E1E"/>
+            <SolidColorBrush x:Key="{x:Static SystemColors.WindowTextBrushKey}" Color="#E0E0E0"/>
+            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#2D2D2D"/>
+            <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="#E0E0E0"/>
+            
+            <!-- ListBox Dark Theme -->
+            <Style TargetType="ListBox">
+                <Setter Property="Background" Value="#252525"/>
+                <Setter Property="BorderBrush" Value="#3D3D3D"/>
+                <Setter Property="Foreground" Value="#E0E0E0"/>
+            </Style>
+            
+            <Style TargetType="ListBoxItem">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Foreground" Value="#E0E0E0"/>
+                <Setter Property="Padding" Value="4,2"/>
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Background" Value="#0078D4"/>
+                    </Trigger>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#3D3D3D"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            
+            <!-- ComboBox Dark Theme -->
+            <Style TargetType="ComboBox">
+                <Setter Property="Background" Value="#3D3D3D"/>
+                <Setter Property="Foreground" Value="#E0E0E0"/>
+                <Setter Property="BorderBrush" Value="#505050"/>
+                <Setter Property="Padding" Value="8,6"/>
+            </Style>
+            
+            <!-- ProgressBar Style -->
+            <Style TargetType="ProgressBar">
+                <Setter Property="Background" Value="#3D3D3D"/>
+                <Setter Property="Foreground" Value="#0078D4"/>
+                <Setter Property="BorderThickness" Value="0"/>
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

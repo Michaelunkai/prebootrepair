@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Resources\shield.ico</ApplicationIcon>
+    <AssemblyName>PreBootRepair</AssemblyName>
+    <RootNamespace>PreBootRepair</RootNamespace>
+    <Version>1.0.0</Version>
+    <Company>OpenClaw</Company>
+    <Product>PreBootRepair - Pre-Boot Disk Repair Utility</Product>
+    <Description>Windows disk repair utility that schedules CHKDSK and system repairs to run before Windows boots</Description>
+    <Copyright>MIT License</Copyright>
+    
+    <!-- Single file publishing -->
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    
+    <!-- Suppress async warnings we're aware of -->
+    <NoWarn>CS1998</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\shield.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Management" Version="10.0.2" />
+  </ItemGroup>
+
+</Project>
